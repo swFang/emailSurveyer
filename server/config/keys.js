@@ -2,7 +2,8 @@
 //  client id : 944345868650-jjmk0gvv4ie9gke6p62bngi0fh5pej93.apps.googleusercontent.com  public (identifies app)
 
 if(process.env.NODE_ENV === 'production') {
-    module.exports = require('prod');
+    module.exports = require('./prod');
 } else {
-    module.exports = require('dev');
+    module.exports = require('./dev');
 }
+
