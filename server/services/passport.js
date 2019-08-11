@@ -21,7 +21,8 @@ passport.use(
       //first arg object wil all keys and callback
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: "/auth/google/callback"
+      callbackURL: "/auth/google/callback",
+      proxy: true
     }, //2nd arg accesstoken?
     (accessToken, refreshToken, profile, done) => {
       //have the access token, need to store on db?
