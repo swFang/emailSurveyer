@@ -24,19 +24,17 @@ passport.use(
       callbackURL: "/auth/google/callback",
       proxy: true
     }, //2nd arg accesstoken?
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       //have the access token, need to store on db?
-      User.findOne({ googleId: profile.id }).then(existingUser => {
+      const existingUser = await User.findOne({ googleId: profile.id })
         //.then is the promise
-        if (!existingUser) {
-          new User({ googleId: profile.id }) //creates mongoose model instance
-            .save() //this is async op
-            .then(user => done(null, user));
-          //.then() is a callback fn
-        } else {
-          done(null, existingUser);
-        }
-      });
+      if (!existingUser) {
+        const user = await new User({ googleId: profile.id }).save() //this is async op
+        done(null, user);
+        //.then() is a callback fn
+      } else {
+        done(null, existingUser);
+      }
     }
   )
 );
