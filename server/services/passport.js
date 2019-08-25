@@ -18,23 +18,20 @@ passport.deserializeUser((id, done) => {
 passport.use(
   new GoogleStrategy(
     {
-      //first arg object wil all keys and callback
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: "/auth/google/callback",
+      callbackURL: '/auth/google/callback',
       proxy: true
-    }, //2nd arg accesstoken?
+    },
     async (accessToken, refreshToken, profile, done) => {
-      //have the access token, need to store on db?
-      const existingUser = await User.findOne({ googleId: profile.id })
-        //.then is the promise
-      if (!existingUser) {
-        const user = await new User({ googleId: profile.id }).save() //this is async op
-        done(null, user);
-        //.then() is a callback fn
-      } else {
-        done(null, existingUser);
+      const existingUser = await User.findOne({ googleId: profile.id });
+
+      if (existingUser) {
+        return done(null, existingUser);
       }
+
+      const user = await new User({ googleId: profile.id }).save();
+      done(null, user);
     }
   )
 );
