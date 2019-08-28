@@ -12,12 +12,15 @@ module.exports = app => {
   app.get(
     "/auth/google/callback",
     //need to save code passport can handle this
-    passport.authenticate("google")
+    passport.authenticate("google"),
+    (req,res) => {
+      res.redirect('/surveys');
+    }
   );
 
   app.get("/api/logout", (req, res) => {
     req.logout(); 
-    res.send(req.user); //destroyed so send should be empty
+    res.redirect('/'); //destroyed so send should be empty
   });
 
   app.get("/api/current_user", (req, res) => {
