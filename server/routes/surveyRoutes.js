@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
-const Mailer = require('../services/OldMailer');
+const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
-    app.post('/api/surveys', requireLogin, requireCredits, (req, res) => {
+    app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
         const {title, subject, body, recipients} = req.body;
         
         // title: title === title
@@ -21,5 +21,17 @@ module.exports = app => {
         });
 
         const mailer = new Mailer(survey, surveyTemplate(survey));
+
+        try {
+            await mailer.send(); 
+            await survey.save();
+            req.user.credits -= 1;
+            const user = await req.user.save();     
+        } catch (err) {
+            res.status(422).send(err);
+        }
+        //console.log('hit the send part');
+
+
     });
 };
