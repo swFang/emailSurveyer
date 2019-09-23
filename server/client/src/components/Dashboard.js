@@ -1,16 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => { 
     return (
         <div>
             Dashboard
             <div className="fixed-action-btn"> 
-                <a className="btn-floating btn-large red">
+                <Link className="btn-floating btn-large red" to = "/surveys/new">
                     <i class="material-icons" className="material-icons"> add </i>
-                </a>
+                </Link>
             </div>
         </div>
     );
 }
 
-export default Dashboard; 
+export default Dashboard;
