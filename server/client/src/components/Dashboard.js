@@ -7,7 +7,7 @@ const Dashboard = () => {
             Dashboard
             <div className="fixed-action-btn"> 
                 <Link className="btn-floating btn-large red" to = "/surveys/new">
-                    <i class="material-icons" className="material-icons"> add </i>
+                    <i className="material-icons" className="material-icons"> add </i>
                 </Link>
             </div>
         </div>
